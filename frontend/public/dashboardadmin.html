@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Administrador</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 30px 0;
+    }
+
+    .header h1 {
+      color: white;
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      color: rgba(255,255,255,0.9);
+      font-size: 1.1rem;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .card h2 {
+      color: #764ba2;
+      font-size: 1.5rem;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+    }
+
+    .card h2::before {
+      content: '';
+      width: 4px;
+      height: 24px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 2px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .form-row.full {
+      grid-template-columns: 1fr;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e1e5e9;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #764ba2;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4);
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+      transform: translateY(-2px);
+    }
+
+    .btn-danger {
+      background: #e74c3c;
+      color: white;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+    }
+
+    .btn-danger:hover {
+      background: #c0392b;
+      transform: scale(1.05);
+    }
+
+    .table-container {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 16px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    td {
+      padding: 14px 12px;
+      border-bottom: 1px solid #eee;
+      vertical-align: middle;
+    }
+
+    tr:hover {
+      background: #f8f9fa;
+    }
+
+    .mensaje {
+      margin-top: 15px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .mensaje.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .mensaje.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .status-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .status-active {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-inactive {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #764ba2;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .button-group {
+        flex-direction: column;
+      }
+      
+      table {
+        font-size: 0.8rem;
+      }
+      
+      th, td {
+        padding: 8px 6px;
+      }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Dashboard Administrador</h1>
+      <p>Gestión de Espacios Deportivos y Reservas</p>
+    </div>
+
+    <div class="dashboard-grid">
+      <!-- Formulario para espacios deportivos -->
+      <div class="card">
+        <form id="formEspacio">
+          <h2 id="tituloEspacio">Crear Espacio Deportivo</h2>
+          <input type="hidden" id="espacioId" />
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="idespaciodeportivo">ID Espacio Deportivo</label>
+              <input type="text" id="idespaciodeportivo" name="idespaciodeportivo" required />
+            </div>
+            <div class="form-group">
+              <label for="nombreEspacio">Nombre</label>
+              <input type="text" id="nombreEspacio" name="nombre" required />
+            </div>
+          </div>
+
+          <div class="form-row full">
+            <div class="form-group">
+              <label for="descripcion">Descripción</label>
+              <textarea id="descripcion" name="descripcion" required placeholder="Describe las características del espacio deportivo..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="capacidad">Capacidad</label>
+              <input type="number" id="capacidad" name="capacidad" required min="1" />
+            </div>
+            <div class="form-group">
+              <label for="disponibilidad">Disponibilidad</label>
+              <select id="disponibilidad" name="disponibilidad" required>
+                <option value="true" selected>Disponible</option>
+                <option value="false">No disponible</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button type="submit" class="btn-primary">
+              <span>💾</span> Guardar Espacio
+            </button>
+            <button type="button" id="cancelEditEspacio" class="btn-secondary hidden">
+              <span>❌</span> Cancelar
+            </button>
+          </div>
+          <div id="mensajeEspacio" class="mensaje"></div>
+        </form>
+      </div>
+
+      <!-- Formulario para reservas -->
+      <div class="card">
+        <form id="formReserva">
+          <h2 id="tituloReserva">Crear Reserva</h2>
+          <input type="hidden" id="reservaId" />
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="idreserva">ID Reserva</label>
+              <input type="text" id="idreserva" name="idreserva" required />
+            </div>
+            <div class="form-group">
+              <label for="fecha">Fecha</label>
+              <input type="date" id="fecha" name="fecha" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="horainicio">Hora Inicio</label>
+              <input type="time" id="horainicio" name="horainicio" required />
+            </div>
+            <div class="form-group">
+              <label for="horafinal">Hora Final</label>
+              <input type="time" id="horafinal" name="horafinal" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="usuario">Correo Institucional</label>
+              <input type="email" id="usuario" name="usuario" required placeholder="usuario@institución.edu" />
+            </div>
+            <div class="form-group">
+              <label for="espaciodeportivo">ID Espacio Deportivo</label>
+              <input type="text" id="espaciodeportivo" name="espaciodeportivo" required />
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button type="submit" class="btn-primary">
+              <span>📅</span> Guardar Reserva
+            </button>
+            <button type="button" id="cancelEditReserva" class="btn-secondary hidden">
+              <span>❌</span> Cancelar
+            </button>
+          </div>
+          <div id="mensajeReserva" class="mensaje"></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Lista de espacios deportivos -->
+    <div class="card">
+      <h2>🏟️ Espacios Deportivos</h2>
+      <div class="table-container">
+        <table id="tablaEspacios">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Capacidad</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Lista de reservas -->
+    <div class="card">
+      <h2>📋 Reservas</h2>
+      <div class="table-container">
+        <table id="tablaReservas">
+          <thead>
+            <tr>
+              <th>ID Reserva</th>
+              <th>Fecha</th>
+              <th>Inicio</th>
+              <th>Final</th>
+              <th>Usuario</th>
+              <th>Espacio</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Variables DOM
+  const formEspacio = document.getElementById('formEspacio');
+  const mensajeEspacio = document.getElementById('mensajeEspacio');
+  const tablaEspaciosBody = document.querySelector('#tablaEspacios tbody');
+  const cancelEditEspacioBtn = document.getElementById('cancelEditEspacio');
+  const tituloEspacio = document.getElementById('tituloEspacio');
+  const espacioIdInput = document.getElementById('espacioId');
+
+  const formReserva = document.getElementById('formReserva');
+  const mensajeReserva = document.getElementById('mensajeReserva');
+  const tablaReservasBody = document.querySelector('#tablaReservas tbody');
+  const cancelEditReservaBtn = document.getElementById('cancelEditReserva');
+  const tituloReserva = document.getElementById('tituloReserva');
+  const reservaIdInput = document.getElementById('reservaId');
+
+  // API URLs
+  const URL_ESPACIOS = 'https://suged-backend.onrender.com/api/espacios';
+  const URL_RESERVAS = 'https://suged-backend.onrender.com/api/reservas';
+
+  // Función para mostrar mensajes
+  function mostrarMensaje(elemento, mensaje, tipo) {
+    elemento.textContent = mensaje;
+    elemento.className = `mensaje ${tipo}`;
+    elemento.classList.add('fade-in');
+    setTimeout(() => {
+      elemento.textContent = '';
+      elemento.className = 'mensaje';
+    }, 5000);
+  }
+
+  // Cargar y mostrar espacios deportivos
+  async function cargarEspacios() {
+    try {
+      const res = await fetch(URL_ESPACIOS);
+      const espacios = await res.json();
+      tablaEspaciosBody.innerHTML = '';
+      espacios.forEach(e => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${e.idespaciodeportivo}</strong></td>
+          <td>${e.nombre}</td>
+          <td>${e.descripcion}</td>
+          <td><strong>${e.capacidad}</strong> personas</td>
+          <td><span class="status-badge ${e.disponibilidad ? 'status-active' : 'status-inactive'}">
+            ${e.disponibilidad ? '✅ Disponible' : '❌ No disponible'}
+          </span></td>
+          <td>
+            <button class="btn-danger" data-id="${e._id}" data-tipo="espacio">
+              🗑️ Eliminar
+            </button>
+          </td>`;
+        tr.classList.add('fade-in');
+        tablaEspaciosBody.appendChild(tr);
+      });
+    } catch (error) {
+      mostrarMensaje(mensajeEspacio, 'Error cargando espacios deportivos', 'error');
+    }
+  }
+
+  // Cargar y mostrar reservas
+  async function cargarReservas() {
+    try {
+      const res = await fetch(URL_RESERVAS);
+      const reservas = await res.json();
+      tablaReservasBody.innerHTML = '';
+      reservas.forEach(r => {
+        const tr = document.createElement('tr');
+        const fecha = new Date(r.fecha).toLocaleDateString('es-ES', {
+          weekday: 'short',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+        tr.innerHTML = `
+          <td><strong>${r.idreserva}</strong></td>
+          <td>${fecha}</td>
+          <td><strong>${r.horainicio}</strong></td>
+          <td><strong>${r.horafinal}</strong></td>
+          <td>${r.usuario?.nombre || r.usuario || 'N/A'}</td>
+          <td>${r.espaciodeportivo?.nombre || r.espaciodeportivo || 'N/A'}</td>
+          <td>
+            <button class="btn-danger" data-id="${r._id}" data-tipo="reserva">
+              🗑️ Eliminar
+            </button>
+          </td>`;
+        tr.classList.add('fade-in');
+        tablaReservasBody.appendChild(tr);
+      });
+    } catch (error) {
+      mostrarMensaje(mensajeReserva, 'Error cargando reservas', 'error');
+    }
+  }
+
+  // Crear o actualizar espacio deportivo
+  formEspacio.addEventListener('submit', async e => {
+    e.preventDefault();
+    mensajeEspacio.textContent = '';
+
+    const submitBtn = formEspacio.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<div class="loading"></div> Guardando...';
+    submitBtn.disabled = true;
+
+    const data = {
+      idespaciodeportivo: formEspacio.idespaciodeportivo.value.trim(),
+      nombre: formEspacio.nombreEspacio.value.trim(),
+      descripcion: formEspacio.descripcion.value.trim(),
+      capacidad: parseInt(formEspacio.capacidad.value),
+      disponibilidad: formEspacio.disponibilidad.value === 'true'
+    };
+
+    try {
+      let res;
+      if (espacioIdInput.value) {
+        res = await fetch(`${URL_ESPACIOS}/${espacioIdInput.value}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+      } else {
+        res = await fetch(URL_ESPACIOS, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+      }
+
+      if (res.ok) {
+        mostrarMensaje(mensajeEspacio, 
+          espacioIdInput.value ? '✅ Espacio actualizado correctamente' : '✅ Espacio creado correctamente', 
+          'success');
+        formEspacio.reset();
+        espacioIdInput.value = '';
+        cancelEditEspacioBtn.classList.add('hidden');
+        tituloEspacio.textContent = 'Crear Espacio Deportivo';
+        cargarEspacios();
+      } else {
+        const error = await res.json();
+        mostrarMensaje(mensajeEspacio, `❌ ${error.mensaje || 'Error guardando espacio'}`, 'error');
+      }
+    } catch (error) {
+      mostrarMensaje(mensajeEspacio, '❌ Error de conexión con el servidor', 'error');
+    } finally {
+      submitBtn.innerHTML = originalText;
+      submitBtn.disabled = false;
+    }
+  });
+
+  // Crear o actualizar reserva
+  formReserva.addEventListener('submit', async e => {
+    e.preventDefault();
+    mensajeReserva.textContent = '';
+
+    const submitBtn = formReserva.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<div class="loading"></div> Guardando...';
+    submitBtn.disabled = true;
+
+    const fechaISO = new Date(formReserva.fecha.value).toISOString();
+
+    const data = {
+      idreserva: formReserva.idreserva.value.trim(),
+      fecha: fechaISO,
+      horainicio: formReserva.horainicio.value,
+      horafinal: formReserva.horafinal.value,
+      usuario: formReserva.usuario.value.trim(),
+      espaciodeportivo: formReserva.espaciodeportivo.value.trim()
+    };
+
+    try {
+      let res;
+      if (reservaIdInput.value) {
+        res = await fetch(`${URL_RESERVAS}/${reservaIdInput.value}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+      } else {
+        res = await fetch(URL_RESERVAS, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+      }
+
+      if (res.ok) {
+        mostrarMensaje(mensajeReserva, 
+          reservaIdInput.value ? '✅ Reserva actualizada correctamente' : '✅ Reserva creada correctamente', 
+          'success');
+        formReserva.reset();
+        reservaIdInput.value = '';
+        cancelEditReservaBtn.classList.add('hidden');
+        tituloReserva.textContent = 'Crear Reserva';
+        cargarReservas();
+      } else {
+        const error = await res.json();
+        mostrarMensaje(mensajeReserva, `❌ ${error.mensaje || 'Error guardando reserva'}`, 'error');
+      }
+    } catch (error) {
+      mostrarMensaje(mensajeReserva, '❌ Error de conexión con el servidor', 'error');
+    } finally {
+      submitBtn.innerHTML = originalText;
+      submitBtn.disabled = false;
+    }
+  });
+
+  // Cancelar edición espacio
+  cancelEditEspacioBtn.addEventListener('click', () => {
+    formEspacio.reset();
+    espacioIdInput.value = '';
+    cancelEditEspacioBtn.classList.add('hidden');
+    tituloEspacio.textContent = 'Crear Espacio Deportivo';
+    mensajeEspacio.textContent = '';
+    mensajeEspacio.className = 'mensaje';
+  });
+
+  // Cancelar edición reserva
+  cancelEditReservaBtn.addEventListener('click', () => {
+    formReserva.reset();
+    reservaIdInput.value = '';
+    cancelEditReservaBtn.classList.add('hidden');
+    tituloReserva.textContent = 'Crear Reserva';
+    mensajeReserva.textContent = '';
+    mensajeReserva.className = 'mensaje';
+  });
+
+  // Delegación de eventos para botones Eliminar
+  document.body.addEventListener('click', async e => {
+    if (e.target.classList.contains('btn-danger') || e.target.closest('.btn-danger')) {
+      const btn = e.target.classList.contains('btn-danger') ? e.target : e.target.closest('.btn-danger');
+      const id = btn.getAttribute('data-id');
+      const tipo = btn.getAttribute('data-tipo');
+      
+      if (confirm(`¿Estás seguro de que deseas eliminar este ${tipo}?\n\nEsta acción no se puede deshacer.`)) {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<div class="loading"></div>';
+        btn.disabled = true;
+
+        try {
+          let res;
+          if (tipo === 'espacio') {
+            res = await fetch(`${URL_ESPACIOS}/${id}`, { method: 'DELETE' });
+            if (res.ok) {
+              cargarEspacios();
+              mostrarMensaje(mensajeEspacio, '✅ Espacio eliminado correctamente', 'success');
+            } else {
+              mostrarMensaje(mensajeEspacio, '❌ Error al eliminar espacio', 'error');
+            }
+          } else if (tipo === 'reserva') {
+            res = await fetch(`${URL_RESERVAS}/${id}`, { method: 'DELETE' });
+            if (res.ok) {
+              cargarReservas();
+              mostrarMensaje(mensajeReserva, '✅ Reserva eliminada correctamente', 'success');
+            } else {
+              mostrarMensaje(mensajeReserva, '❌ Error al eliminar reserva', 'error');
+            }
+          }
+        } catch (error) {
+          const mensaje = tipo === 'espacio' ? mensajeEspacio : mensajeReserva;
+          mostrarMensaje(mensaje, '❌ Error de conexión con el servidor', 'error');
+        } finally {
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+        }
+      }
+    }
+  });
+
+  // Establecer fecha mínima para reservas (hoy)
+  document.getElementById('fecha').min = new Date().toISOString().split('T')[0];
+
+  // Inicializar
+  cargarEspacios();
+  cargarReservas();
+</script>
+
+</body>
+</html>

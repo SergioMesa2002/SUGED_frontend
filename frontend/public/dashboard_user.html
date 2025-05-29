@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Reservas Deportivas</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: 300;
+    }
+
+    .header p {
+      opacity: 0.9;
+      font-size: 1.1rem;
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      padding: 30px;
+    }
+
+    .calendar-section {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding: 15px 20px;
+      background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+      border-radius: 12px;
+    }
+
+    .nav-btn {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+    }
+
+    .month-year {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .calendar-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .calendar-table th {
+      background: linear-gradient(135deg, #1e293b, #334155);
+      color: white;
+      padding: 15px 8px;
+      font-weight: 600;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .calendar-table td {
+      height: 50px;
+      text-align: center;
+      vertical-align: middle;
+      border: 1px solid #e2e8f0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      position: relative;
+    }
+
+    .calendar-table td:hover:not(.inactive) {
+      background: linear-gradient(135deg, #ddd6fe, #c4b5fd);
+      transform: scale(1.05);
+      z-index: 2;
+    }
+
+    .calendar-table td.inactive {
+      color: #cbd5e1;
+      cursor: default;
+      background: #f8fafc;
+    }
+
+    .calendar-table td.selected {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
+      color: white !important;
+      font-weight: bold;
+      transform: scale(1.1);
+      z-index: 3;
+      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+    }
+
+    .form-section {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #374151;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #f9fafb;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+      background: white;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .reservations-section {
+      grid-column: 1 / -1;
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+
+    .selected-date {
+      display: inline-block;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+
+    .reservations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .reservation-card {
+      background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+      border-radius: 12px;
+      padding: 20px;
+      border-left: 4px solid #4f46e5;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .reservation-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .reservation-id {
+      font-weight: bold;
+      color: #4f46e5;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .reservation-time {
+      background: #10b981;
+      color: white;
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-block;
+      margin: 5px 0;
+    }
+
+    .reservation-detail {
+      margin: 8px 0;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .reservation-detail i {
+      width: 16px;
+      color: #6366f1;
+    }
+
+    .no-reservations {
+      text-align: center;
+      color: #64748b;
+      font-style: italic;
+      padding: 40px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 2px dashed #cbd5e1;
+    }
+
+    .message {
+      margin-top: 15px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+
+    .message.success {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .message.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #6366f1;
+      font-weight: 600;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #e5e7eb;
+      border-top: 2px solid #6366f1;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 20px;
+      }
+      
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .calendar-table td {
+        height: 40px;
+        font-size: 0.9rem;
+      }
+      
+      .reservations-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1><i class="fas fa-calendar-alt"></i> Sistema de Reservas Deportivas</h1>
+      <p>Gestiona tus reservas de espacios deportivos de manera fácil y rápida</p>
+    </div>
+
+    <div class="main-content">
+      <div class="calendar-section">
+        <h2 class="section-title">
+          <i class="fas fa-calendar"></i>
+          Calendario
+        </h2>
+        
+        <div class="calendar-header">
+          <button class="nav-btn" id="prevMes">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <span class="month-year" id="mesAnio"></span>
+          <button class="nav-btn" id="nextMes">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+
+        <table class="calendar-table" id="calendario">
+          <thead>
+            <tr>
+              <th>Dom</th><th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th>
+            </tr>
+          </thead>
+          <tbody id="dias"></tbody>
+        </table>
+      </div>
+
+      <div class="form-section">
+        <h2 class="section-title">
+          <i class="fas fa-plus-circle"></i>
+          Nueva Reserva
+        </h2>
+        
+        <form id="formReservaCalendario">
+          <div class="form-group">
+            <label for="idreserva">
+              <i class="fas fa-tag"></i> ID Reserva
+            </label>
+            <input type="text" id="idreserva" name="idreserva" class="form-control" placeholder="Ej: RES001" required />
+          </div>
+
+          <div class="form-group">
+            <label for="fecha">
+              <i class="fas fa-calendar-day"></i> Fecha
+            </label>
+            <input type="date" id="fecha" name="fecha" class="form-control" required />
+          </div>
+
+          <div class="form-group">
+            <label for="horainicio">
+              <i class="fas fa-clock"></i> Hora Inicio
+            </label>
+            <input type="time" id="horainicio" name="horainicio" class="form-control" required />
+          </div>
+
+          <div class="form-group">
+            <label for="horafinal">
+              <i class="fas fa-clock"></i> Hora Final
+            </label>
+            <input type="time" id="horafinal" name="horafinal" class="form-control" required />
+          </div>
+
+          <div class="form-group">
+            <label for="usuario">
+              <i class="fas fa-user"></i> Correo Institucional
+            </label>
+            <input type="email" id="usuario" name="usuario" class="form-control" readonly />
+          </div>
+
+          <div class="form-group">
+            <label for="espaciodeportivo">
+              <i class="fas fa-dumbbell"></i> Espacio Deportivo
+            </label>
+            <select id="espaciodeportivo" name="espaciodeportivo" class="form-control" required>
+              <option value="">-- Selecciona un espacio --</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-save"></i> Guardar Reserva
+          </button>
+        </form>
+
+        <div id="mensajeReservaCalendario" class="message" style="display: none;"></div>
+      </div>
+    </div>
+
+    <div class="reservations-section">
+      <h2 class="section-title">
+        <i class="fas fa-list"></i>
+        Reservas para:
+        <span class="selected-date" id="fechaSeleccionada"></span>
+      </h2>
+      <div id="listaReservas" class="reservations-grid"></div>
+    </div>
+  </div>
+
+<script>
+  const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+  const calendarioBody = document.getElementById('dias');
+  const mesAnio = document.getElementById('mesAnio');
+  const fechaSeleccionadaSpan = document.getElementById('fechaSeleccionada');
+  const listaReservas = document.getElementById('listaReservas');
+
+  const formReserva = document.getElementById('formReservaCalendario');
+  const mensajeReserva = document.getElementById('mensajeReservaCalendario');
+
+  const inputIdReserva = document.getElementById('idreserva');
+  const inputFecha = document.getElementById('fecha');
+  const inputHoraInicio = document.getElementById('horainicio');
+  const inputHoraFinal = document.getElementById('horafinal');
+  const inputUsuario = document.getElementById('usuario');
+  const selectEspacio = document.getElementById('espaciodeportivo');
+
+  let fechaActual = new Date();
+  let fechaSeleccionada = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate());
+
+  const URL_ESPACIOS = 'https://suged-backend.onrender.com/api/espacios';
+  const URL_RESERVAS = 'https://suged-backend.onrender.com/api/reservas';
+
+  function generarCalendario(mes, anio) {
+    mesAnio.textContent = `${meses[mes]} ${anio}`;
+    calendarioBody.innerHTML = '';
+
+    const primerDia = new Date(anio, mes, 1);
+    const ultimoDia = new Date(anio, mes + 1, 0);
+
+    const diaSemanaPrimerDia = primerDia.getDay();
+    const totalDias = ultimoDia.getDate();
+
+    let fila = document.createElement('tr');
+    for (let i = 0; i < diaSemanaPrimerDia; i++) {
+      const td = document.createElement('td');
+      td.classList.add('inactive');
+      fila.appendChild(td);
+    }
+
+    for (let dia = 1; dia <= totalDias; dia++) {
+      if (fila.children.length === 7) {
+        calendarioBody.appendChild(fila);
+        fila = document.createElement('tr');
+      }
+      const celda = document.createElement('td');
+      celda.textContent = dia;
+
+      const celdaFecha = new Date(anio, mes, dia);
+
+      if (celdaFecha.toDateString() === fechaSeleccionada.toDateString()) {
+        celda.classList.add('selected');
+      }
+
+      if (celdaFecha < new Date(new Date().setHours(0,0,0,0))) {
+        celda.classList.add('inactive');
+      } else {
+        celda.addEventListener('click', () => {
+          fechaSeleccionada = celdaFecha;
+          inputFecha.value = fechaSeleccionada.toISOString().slice(0,10);
+          actualizarSeleccion();
+        });
+      }
+      fila.appendChild(celda);
+    }
+
+    while (fila.children.length < 7) {
+      const td = document.createElement('td');
+      td.classList.add('inactive');
+      fila.appendChild(td);
+    }
+    calendarioBody.appendChild(fila);
+  }
+
+  async function actualizarSeleccion() {
+    fechaSeleccionadaSpan.textContent = fechaSeleccionada.toLocaleDateString('es-ES', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    generarCalendario(fechaSeleccionada.getMonth(), fechaSeleccionada.getFullYear());
+    await cargarReservasDia(fechaSeleccionada);
+  }
+
+  async function cargarEspaciosSelect() {
+    try {
+      const res = await fetch(URL_ESPACIOS);
+      const espacios = await res.json();
+      selectEspacio.innerHTML = '<option value="">-- Selecciona un espacio --</option>';
+      espacios.forEach(e => {
+        if (e.disponibilidad) {
+          const option = document.createElement('option');
+          option.value = e.idespaciodeportivo;
+          option.textContent = `${e.nombre} (${e.idespaciodeportivo})`;
+          selectEspacio.appendChild(option);
+        }
+      });
+    } catch {
+      selectEspacio.innerHTML = '<option>Error cargando espacios</option>';
+    }
+  }
+
+  async function cargarReservasDia(fecha) {
+    listaReservas.innerHTML = `
+      <div class="loading">
+        <div class="spinner"></div>
+        Cargando reservas...
+      </div>
+    `;
+    
+    try {
+      const res = await fetch(URL_RESERVAS);
+      const reservas = await res.json();
+
+      const fechaStr = fecha.toISOString().slice(0, 10);
+      const reservasDia = reservas.filter(r => r.fecha.slice(0, 10) === fechaStr);
+
+      if (reservasDia.length === 0) {
+        listaReservas.innerHTML = `
+          <div class="no-reservations">
+            <i class="fas fa-calendar-times" style="font-size: 2rem; margin-bottom: 10px; color: #cbd5e1;"></i>
+            <p>No hay reservas programadas para este día</p>
+          </div>
+        `;
+        return;
+      }
+
+      listaReservas.innerHTML = '';
+      reservasDia.forEach(r => {
+        const card = document.createElement('div');
+        card.className = 'reservation-card';
+        
+        card.innerHTML = `
+          <div class="reservation-id">
+            <i class="fas fa-bookmark"></i>
+            ${r.idreserva}
+          </div>
+          <div class="reservation-time">
+            <i class="fas fa-clock"></i>
+            ${r.horainicio} - ${r.horafinal}
+          </div>
+          <div class="reservation-detail">
+            <i class="fas fa-dumbbell"></i>
+            <strong>Espacio:</strong> ${r.espaciodeportivo?.nombre || r.espaciodeportivo}
+          </div>
+          <div class="reservation-detail">
+            <i class="fas fa-user"></i>
+            <strong>Usuario:</strong> ${r.usuario?.nombre || r.usuario}
+          </div>
+        `;
+        
+        listaReservas.appendChild(card);
+      });
+    } catch {
+      listaReservas.innerHTML = `
+        <div class="no-reservations" style="border-color: #fca5a5; background: #fee2e2; color: #991b1b;">
+          <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 10px;"></i>
+          <p>Error al cargar las reservas</p>
+        </div>
+      `;
+    }
+  }
+
+  function mostrarMensaje(texto, tipo) {
+    mensajeReserva.textContent = texto;
+    mensajeReserva.className = `message ${tipo}`;
+    mensajeReserva.style.display = 'block';
+    
+    setTimeout(() => {
+      mensajeReserva.style.display = 'none';
+    }, 5000);
+  }
+
+  formReserva.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    if (!inputUsuario.value) {
+      mostrarMensaje('No se encontró usuario logueado.', 'error');
+      return;
+    }
+
+    const data = {
+      idreserva: inputIdReserva.value.trim(),
+      fecha: inputFecha.value,
+      horainicio: inputHoraInicio.value,
+      horafinal: inputHoraFinal.value,
+      usuario: inputUsuario.value,
+      espaciodeportivo: selectEspacio.value
+    };
+
+    if (!data.espaciodeportivo) {
+      mostrarMensaje('Selecciona un espacio deportivo.', 'error');
+      return;
+    }
+
+    // Validar que hora final sea mayor que hora inicial
+    if (data.horafinal <= data.horainicio) {
+      mostrarMensaje('La hora final debe ser posterior a la hora inicial.', 'error');
+      return;
+    }
+
+    try {
+      const res = await fetch(URL_RESERVAS, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        mostrarMensaje('¡Reserva creada correctamente!', 'success');
+        formReserva.reset();
+        inputFecha.value = fechaSeleccionada.toISOString().slice(0,10);
+        await cargarReservasDia(new Date(data.fecha));
+      } else {
+        const error = await res.json();
+        mostrarMensaje(error.mensaje || 'Error al crear la reserva.', 'error');
+      }
+    } catch {
+      mostrarMensaje('Error de conexión con el servidor.', 'error');
+    }
+  });
+
+  // Eventos de navegación del calendario
+  document.getElementById('prevMes').addEventListener('click', () => {
+    fechaActual = new Date(fechaActual.getFullYear(), fechaActual.getMonth() - 1, 1);
+    generarCalendario(fechaActual.getMonth(), fechaActual.getFullYear());
+  });
+
+  document.getElementById('nextMes').addEventListener('click', () => {
+    fechaActual = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 1);
+    generarCalendario(fechaActual.getMonth(), fechaActual.getFullYear());
+  });
+
+  // Inicialización
+  window.addEventListener('load', () => {
+    // Simular localStorage para demo - reemplazar con tu lógica real
+    const correo = localStorage.getItem('usuarioCorreo') || 'usuario@ejemplo.com';
+    inputUsuario.value = correo;
+    inputFecha.value = fechaSeleccionada.toISOString().slice(0, 10);
+    cargarEspaciosSelect();
+    actualizarSeleccion();
+  });
+</script>
+
+</body>
+</html>
