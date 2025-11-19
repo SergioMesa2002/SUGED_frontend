@@ -13,15 +13,16 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
       min-height: 100vh;
-      padding: 20px;
+      padding: 0;
       color: #333;
     }
 
     .container {
       max-width: 1400px;
       margin: 0 auto;
+      padding: 20px;
     }
 
     .header {
@@ -39,8 +40,9 @@
     }
 
     .header p {
-      color: rgba(255,255,255,0.9);
+      color: #f4c430;
       font-size: 1.1rem;
+      font-weight: 600;
     }
 
     .dashboard-grid {
@@ -51,22 +53,23 @@
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.98);
       backdrop-filter: blur(10px);
       border-radius: 20px;
       padding: 30px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(212, 160, 23, 0.2);
       transition: all 0.3s ease;
     }
 
     .card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 12px 40px rgba(212, 160, 23, 0.4);
+      border-color: #d4a017;
     }
 
     .card h2 {
-      color: #764ba2;
+      color: #000000;
       font-size: 1.5rem;
       margin-bottom: 25px;
       display: flex;
@@ -79,7 +82,7 @@
       content: '';
       width: 4px;
       height: 24px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(135deg, #d4a017, #f4c430);
       border-radius: 2px;
     }
 
@@ -101,25 +104,25 @@
       display: block;
       margin-bottom: 8px;
       font-weight: 600;
-      color: #555;
+      color: #1a1a1a;
       font-size: 0.9rem;
     }
 
     input, textarea, select {
       width: 100%;
       padding: 12px 16px;
-      border: 2px solid #e1e5e9;
+      border: 2px solid #e0e0e0;
       border-radius: 12px;
       font-size: 1rem;
       transition: all 0.3s ease;
-      background: #f8f9fa;
+      background: #f9f9f9;
     }
 
     input:focus, textarea:focus, select:focus {
       outline: none;
-      border-color: #764ba2;
+      border-color: #d4a017;
       background: white;
-      box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+      box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.15);
     }
 
     textarea {
@@ -147,34 +150,34 @@
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
+      background: linear-gradient(135deg, #d4a017, #f4c430);
+      color: #000000;
     }
 
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4);
+      box-shadow: 0 6px 20px rgba(212, 160, 23, 0.5);
     }
 
     .btn-secondary {
-      background: #6c757d;
+      background: #4a4a4a;
       color: white;
     }
 
     .btn-secondary:hover {
-      background: #5a6268;
+      background: #1a1a1a;
       transform: translateY(-2px);
     }
 
     .btn-danger {
-      background: #e74c3c;
+      background: #8b0000;
       color: white;
       padding: 8px 16px;
       font-size: 0.9rem;
     }
 
     .btn-danger:hover {
-      background: #c0392b;
+      background: #660000;
       transform: scale(1.05);
     }
 
@@ -182,7 +185,8 @@
       background: white;
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      border: 2px solid rgba(212, 160, 23, 0.1);
     }
 
     table {
@@ -191,22 +195,24 @@
     }
 
     th {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
+      background: linear-gradient(135deg, #1a1a1a, #000000);
+      color: #f4c430;
       padding: 16px 12px;
       text-align: left;
       font-weight: 600;
       font-size: 0.9rem;
+      border-bottom: 3px solid #d4a017;
     }
 
     td {
       padding: 14px 12px;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid #e0e0e0;
       vertical-align: middle;
+      color: #1a1a1a;
     }
 
     tr:hover {
-      background: #f8f9fa;
+      background: #fff9e6;
     }
 
     .mensaje {
@@ -218,15 +224,15 @@
     }
 
     .mensaje.success {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
+      background: #fff9e6;
+      color: #996600;
+      border: 2px solid #d4a017;
     }
 
     .mensaje.error {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
+      background: #ffe0e0;
+      color: #8b0000;
+      border: 2px solid #cc0000;
     }
 
     .status-badge {
@@ -237,21 +243,23 @@
     }
 
     .status-active {
-      background: #d4edda;
-      color: #155724;
+      background: #fff9e6;
+      color: #996600;
+      border: 1px solid #d4a017;
     }
 
     .status-inactive {
-      background: #f8d7da;
-      color: #721c24;
+      background: #f0f0f0;
+      color: #4a4a4a;
+      border: 1px solid #999999;
     }
 
     .loading {
       display: inline-block;
       width: 20px;
       height: 20px;
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid #764ba2;
+      border: 3px solid rgba(0, 0, 0, 0.2);
+      border-top: 3px solid #000000;
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -262,6 +270,18 @@
     }
 
     @media (max-width: 768px) {
+      .banner {
+        height: 180px;
+      }
+
+      .banner h1 {
+        font-size: 2rem;
+      }
+
+      .banner p {
+        font-size: 1rem;
+      }
+
       .dashboard-grid {
         grid-template-columns: 1fr;
       }
@@ -298,12 +318,15 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
+  <!-- Banner superior - puedes agregar tu imagen cambiando el background-image -->
+  <div class="banner" style="background-image: url('tu-imagen-aqui.jpg');">
+    <div class="banner-content">
       <h1>Dashboard Administrador</h1>
       <p>Gestión de Espacios Deportivos y Reservas</p>
     </div>
+  </div>
 
+  <div class="container">
     <div class="dashboard-grid">
       <!-- Formulario para espacios deportivos -->
       <div class="card">

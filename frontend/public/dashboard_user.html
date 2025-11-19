@@ -14,7 +14,7 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
       min-height: 100vh;
       padding: 20px;
     }
@@ -22,29 +22,33 @@
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.98);
       border-radius: 20px;
       backdrop-filter: blur(10px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
       overflow: hidden;
+      border: 2px solid rgba(212, 160, 23, 0.3);
     }
 
     .header {
-      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      background: linear-gradient(135deg, #1a1a1a, #000000);
       color: white;
       padding: 30px;
       text-align: center;
+      border-bottom: 4px solid #d4a017;
     }
 
     .header h1 {
       font-size: 2.5rem;
       margin-bottom: 10px;
       font-weight: 300;
+      color: #f4c430;
     }
 
     .header p {
       opacity: 0.9;
       font-size: 1.1rem;
+      color: white;
     }
 
     .main-content {
@@ -58,7 +62,8 @@
       background: white;
       border-radius: 15px;
       padding: 25px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      border: 2px solid rgba(212, 160, 23, 0.1);
     }
 
     .calendar-header {
@@ -67,31 +72,33 @@
       align-items: center;
       margin-bottom: 25px;
       padding: 15px 20px;
-      background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+      background: linear-gradient(135deg, #fff9e6, #ffedcc);
       border-radius: 12px;
+      border: 2px solid #d4a017;
     }
 
     .nav-btn {
-      background: linear-gradient(135deg, #4f46e5, #7c3aed);
-      color: white;
+      background: linear-gradient(135deg, #d4a017, #f4c430);
+      color: #000000;
       border: none;
       padding: 12px 16px;
       border-radius: 10px;
       cursor: pointer;
       font-size: 1.1rem;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+      box-shadow: 0 4px 15px rgba(212, 160, 23, 0.3);
+      font-weight: 600;
     }
 
     .nav-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+      box-shadow: 0 6px 20px rgba(212, 160, 23, 0.5);
     }
 
     .month-year {
       font-size: 1.5rem;
       font-weight: 600;
-      color: #1e293b;
+      color: #000000;
     }
 
     .calendar-table {
@@ -103,61 +110,69 @@
     }
 
     .calendar-table th {
-      background: linear-gradient(135deg, #1e293b, #334155);
-      color: white;
+      background: linear-gradient(135deg, #1a1a1a, #000000);
+      color: #f4c430;
       padding: 15px 8px;
       font-weight: 600;
       text-align: center;
       font-size: 0.9rem;
+      border-bottom: 3px solid #d4a017;
     }
 
     .calendar-table td {
       height: 50px;
       text-align: center;
       vertical-align: middle;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #e0e0e0;
       cursor: pointer;
       transition: all 0.3s ease;
       font-weight: 500;
       position: relative;
+      color: #1a1a1a;
     }
 
     .calendar-table td:hover:not(.inactive) {
-      background: linear-gradient(135deg, #ddd6fe, #c4b5fd);
+      background: linear-gradient(135deg, #fff9e6, #ffedcc);
       transform: scale(1.05);
       z-index: 2;
+      border-color: #d4a017;
     }
 
     .calendar-table td.inactive {
       color: #cbd5e1;
       cursor: default;
-      background: #f8fafc;
+      background: #f8f8f8;
     }
 
     .calendar-table td.selected {
-      background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
-      color: white !important;
+      background: linear-gradient(135deg, #d4a017, #f4c430) !important;
+      color: #000000 !important;
       font-weight: bold;
       transform: scale(1.1);
       z-index: 3;
-      box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+      box-shadow: 0 4px 15px rgba(212, 160, 23, 0.5);
     }
 
     .form-section {
       background: white;
       border-radius: 15px;
       padding: 25px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      border: 2px solid rgba(212, 160, 23, 0.1);
     }
 
     .section-title {
       font-size: 1.5rem;
       font-weight: 600;
-      color: #1e293b;
+      color: #000000;
       margin-bottom: 20px;
       display: flex;
       align-items: center;
       gap: 10px;
+    }
+
+    .section-title i {
+      color: #d4a017;
     }
 
     .form-group {
@@ -167,31 +182,36 @@
     .form-group label {
       display: block;
       margin-bottom: 8px;
-      color: #374151;
+      color: #1a1a1a;
       font-weight: 600;
       font-size: 0.9rem;
+    }
+
+    .form-group label i {
+      color: #d4a017;
+      margin-right: 5px;
     }
 
     .form-control {
       width: 100%;
       padding: 12px 16px;
-      border: 2px solid #e5e7eb;
+      border: 2px solid #e0e0e0;
       border-radius: 10px;
       font-size: 1rem;
       transition: all 0.3s ease;
-      background: #f9fafb;
+      background: #f9f9f9;
     }
 
     .form-control:focus {
       outline: none;
-      border-color: #4f46e5;
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+      border-color: #d4a017;
+      box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.15);
       background: white;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: white;
+      background: linear-gradient(135deg, #d4a017, #f4c430);
+      color: #000000;
       border: none;
       padding: 15px 30px;
       border-radius: 12px;
@@ -200,12 +220,12 @@
       cursor: pointer;
       transition: all 0.3s ease;
       width: 100%;
-      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+      box-shadow: 0 4px 15px rgba(212, 160, 23, 0.4);
     }
 
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+      box-shadow: 0 6px 20px rgba(212, 160, 23, 0.5);
     }
 
     .reservations-section {
@@ -213,14 +233,15 @@
       background: white;
       border-radius: 15px;
       padding: 25px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
       margin-top: 20px;
+      border: 2px solid rgba(212, 160, 23, 0.1);
     }
 
     .selected-date {
       display: inline-block;
-      background: linear-gradient(135deg, #4f46e5, #7c3aed);
-      color: white;
+      background: linear-gradient(135deg, #d4a017, #f4c430);
+      color: #000000;
       padding: 8px 15px;
       border-radius: 20px;
       font-weight: 600;
@@ -235,22 +256,23 @@
     }
 
     .reservation-card {
-      background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+      background: linear-gradient(135deg, #fff9e6, #ffedcc);
       border-radius: 12px;
       padding: 20px;
-      border-left: 4px solid #4f46e5;
+      border-left: 4px solid #d4a017;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     }
 
     .reservation-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 10px 30px rgba(212, 160, 23, 0.3);
+      border-left-width: 6px;
     }
 
     .reservation-id {
       font-weight: bold;
-      color: #4f46e5;
+      color: #000000;
       font-size: 1.1rem;
       margin-bottom: 10px;
       display: flex;
@@ -258,9 +280,13 @@
       gap: 8px;
     }
 
+    .reservation-id i {
+      color: #d4a017;
+    }
+
     .reservation-time {
-      background: #10b981;
-      color: white;
+      background: #000000;
+      color: #f4c430;
       padding: 5px 12px;
       border-radius: 15px;
       font-size: 0.9rem;
@@ -271,7 +297,7 @@
 
     .reservation-detail {
       margin: 8px 0;
-      color: #64748b;
+      color: #4a4a4a;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -279,17 +305,21 @@
 
     .reservation-detail i {
       width: 16px;
-      color: #6366f1;
+      color: #d4a017;
     }
 
     .no-reservations {
       text-align: center;
-      color: #64748b;
+      color: #666666;
       font-style: italic;
       padding: 40px;
-      background: #f8fafc;
+      background: #f9f9f9;
       border-radius: 12px;
-      border: 2px dashed #cbd5e1;
+      border: 2px dashed #d4a017;
+    }
+
+    .no-reservations i {
+      color: #d4a017;
     }
 
     .message {
@@ -300,15 +330,15 @@
     }
 
     .message.success {
-      background: #d1fae5;
-      color: #065f46;
-      border: 1px solid #a7f3d0;
+      background: #fff9e6;
+      color: #996600;
+      border: 2px solid #d4a017;
     }
 
     .message.error {
-      background: #fee2e2;
-      color: #991b1b;
-      border: 1px solid #fca5a5;
+      background: #ffe0e0;
+      color: #8b0000;
+      border: 2px solid #cc0000;
     }
 
     .loading {
@@ -316,15 +346,15 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      color: #6366f1;
+      color: #d4a017;
       font-weight: 600;
     }
 
     .spinner {
       width: 20px;
       height: 20px;
-      border: 2px solid #e5e7eb;
-      border-top: 2px solid #6366f1;
+      border: 2px solid #e0e0e0;
+      border-top: 2px solid #d4a017;
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -583,7 +613,7 @@
       if (reservasDia.length === 0) {
         listaReservas.innerHTML = `
           <div class="no-reservations">
-            <i class="fas fa-calendar-times" style="font-size: 2rem; margin-bottom: 10px; color: #cbd5e1;"></i>
+            <i class="fas fa-calendar-times" style="font-size: 2rem; margin-bottom: 10px;"></i>
             <p>No hay reservas programadas para este día</p>
           </div>
         `;
@@ -618,8 +648,8 @@
       });
     } catch {
       listaReservas.innerHTML = `
-        <div class="no-reservations" style="border-color: #fca5a5; background: #fee2e2; color: #991b1b;">
-          <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 10px;"></i>
+        <div class="no-reservations" style="border-color: #cc0000; background: #ffe0e0; color: #8b0000;">
+          <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 10px; color: #8b0000;"></i>
           <p>Error al cargar las reservas</p>
         </div>
       `;
